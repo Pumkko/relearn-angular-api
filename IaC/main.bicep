@@ -1,33 +1,18 @@
+targetScope='subscription'
+
 @description('Specifies the location for resources.')
-param location string = resourceGroup().location
+param location string = 'eastus'
 
-resource relearnAngularApiAppServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
-  name: 'relearnAngularApiPlan'
+
+resource relearnAngularRg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+  name: 'relearn-angular-rg'
   location: location
-  sku: {
-    name: 'F1'
-  }
-  kind: 'windows'
 }
 
-resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
-  name: 'relearnAngularApp'
-  location: location
-  properties: {
-    serverFarmId: relearnAngularApiAppServicePlan.id
-    httpsOnly: true
-    siteConfig: {
-      windowsFxVersion: 'DOTNETCORE|7.0'
-    }
-  }
-}
-
-resource relearnAngularAppSourceControl 'Microsoft.Web/sites/sourcecontrols@2023-01-01' = {
-  name: 'web'
-  parent: relearnAngularApiAppService
-  properties: {
-    branch: 'main'
-    isGitHubAction: true
-    repoUrl: 'https://github.com/Pumkko/relearn-angular-api'
+module webApp 'webapp.bicep' = {
+  name: 'webbAppModule'
+  scope: relearnAngularRg 
+  params: {
+    webAppLocation: location
   }
 }
