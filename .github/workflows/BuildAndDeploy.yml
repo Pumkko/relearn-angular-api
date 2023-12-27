@@ -21,3 +21,4 @@ jobs:
         template: ./IaC/main.bicep
         failOnStdErr: false
         scope: 'subscription'
+        region: eastus
