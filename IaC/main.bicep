@@ -1,5 +1,7 @@
 targetScope='subscription'
 
+param appRegistrationClientId string
+
 @description('Specifies the location for resources.')
 param location string = 'eastus'
 
@@ -14,5 +16,7 @@ module webApp 'webapp.bicep' = {
   scope: relearnAngularRg 
   params: {
     webAppLocation: location
+    appRegistrationClientId: appRegistrationClientId
+
   }
 }

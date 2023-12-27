@@ -1,15 +1,12 @@
 param webAppLocation string
-
+param appRegistrationClientId string
 
 var keyvaultName = 'relearn-angular-kv'
 var azureAdTenantIdSecretName = 'AzureTenantId'
 var azureAppClientIdSecretName = 'AzureAppClientId'
-var userAssignedIdentityName = 'relearnAngularRgWebAppKvIdentity'
 
-
-// create user assigned managed identity
 resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: userAssignedIdentityName
+  name: 'relearnAngularRgWebAppKvIdentity'
   location: webAppLocation
 }
 
@@ -66,5 +63,6 @@ module keyvault 'keyvault.bicep' = {
     AzureAdTenantIdSecretName: azureAdTenantIdSecretName
     AzureAppClientIdSecretName: azureAppClientIdSecretName
     useAssignedIdentityObjectId: userAssignedIdentity.properties.principalId
+    appRegistrationClientId: appRegistrationClientId
   }
 }

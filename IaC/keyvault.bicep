@@ -3,6 +3,7 @@ param location string
 param useAssignedIdentityObjectId string
 param AzureAdTenantIdSecretName string
 param AzureAppClientIdSecretName string
+param appRegistrationClientId string
 
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
@@ -41,6 +42,6 @@ resource clientIdSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
   name: AzureAppClientIdSecretName
   properties: {
-    value: ''
+    value: appRegistrationClientId
   }
 }

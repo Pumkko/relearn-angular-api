@@ -18,7 +18,9 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        template: ./IaC/main.bicep
+        template: ./IaC/main.Bicep
+        parameters: 
+          appRegistrationClientId = ${{ secrets.AZURE_APP_CLIENT_ID }}
         failOnStdErr: false
         scope: 'subscription'
         region: eastus
