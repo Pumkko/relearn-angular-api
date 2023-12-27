@@ -7,6 +7,7 @@ namespace RelearnAngularApi.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
+    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -22,7 +23,6 @@ namespace RelearnAngularApi.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
