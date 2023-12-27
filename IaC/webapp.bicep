@@ -21,13 +21,3 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
     }
   }
 }
-
-resource relearnAngularAppSourceControl 'Microsoft.Web/sites/sourcecontrols@2023-01-01' = {
-  name: 'web'
-  parent: relearnAngularApiAppService
-  properties: {
-    branch: 'main'
-    isGitHubAction: true
-    repoUrl: 'https://github.com/Pumkko/relearn-angular-api'
-  }
-}
