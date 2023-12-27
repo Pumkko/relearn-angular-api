@@ -1,13 +1,9 @@
-param keyvaultName string
 param location string
-param useAssignedIdentityObjectId string
-param AzureAdTenantIdSecretName string
-param AzureAppClientIdSecretName string
+param userAssignedIdentityId string
 param appRegistrationClientId string
 
-
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
-  name: keyvaultName
+  name: 'relearn-angular-kv'
   location: location
   properties: {
     sku: {
@@ -17,7 +13,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     tenantId: subscription().tenantId
     accessPolicies: [
       {
-        objectId: useAssignedIdentityObjectId
+        objectId: userAssignedIdentityId
         permissions: {
           secrets: [
             'get'
@@ -32,7 +28,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
 
 resource tenantIdSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
-  name: AzureAdTenantIdSecretName
+  name: 'AzureTenantId'
   properties: {
     value: subscription().tenantId
   }
@@ -40,8 +36,12 @@ resource tenantIdSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
 
 resource clientIdSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
-  name: AzureAppClientIdSecretName
+  name: 'AzureAppClientId'
   properties: {
     value: appRegistrationClientId
   }
 }
+
+output tenantIdSecretName string = tenantIdSecret.name
+output clientIdSecretName string = clientIdSecret.name
+output keyVaultName string = keyVault.name

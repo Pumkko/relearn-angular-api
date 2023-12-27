@@ -1,15 +1,8 @@
 param webAppLocation string
-param appRegistrationClientId string
-
-var keyvaultName = 'relearn-angular-kv'
-var azureAdTenantIdSecretName = 'AzureTenantId'
-var azureAppClientIdSecretName = 'AzureAppClientId'
-
-resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'relearnAngularRgWebAppKvIdentity'
-  location: webAppLocation
-}
-
+param keyvaultName string
+param azureAdTenantIdSecretName string
+param azureAppClientIdSecretName string
+param userAssignedIdentityId string
 
 resource relearnAngularApiAppServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
   name: 'relearnAngularApiPlan'
@@ -26,13 +19,13 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userAssignedIdentity.id}': {}
+      '${userAssignedIdentityId}': {}
     }
   }
   properties: {
     serverFarmId: relearnAngularApiAppServicePlan.id
     httpsOnly: true
-    keyVaultReferenceIdentity: userAssignedIdentity.id
+    keyVaultReferenceIdentity: userAssignedIdentityId
     siteConfig: {
       metadata: [
         {
@@ -52,17 +45,5 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
       ]
       netFrameworkVersion: 'v8.0'
     }
-  }
-}
-
-module keyvault 'keyvault.bicep' = {
-  name: 'keyVaultModule'
-  params: {
-    keyvaultName: keyvaultName
-    location: webAppLocation
-    AzureAdTenantIdSecretName: azureAdTenantIdSecretName
-    AzureAppClientIdSecretName: azureAppClientIdSecretName
-    useAssignedIdentityObjectId: userAssignedIdentity.properties.principalId
-    appRegistrationClientId: appRegistrationClientId
   }
 }
