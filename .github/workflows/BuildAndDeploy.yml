@@ -20,7 +20,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         template: ./IaC/main.bicep
         parameters: 
-          appRegistrationClientId = ${{ secrets.AZURE_APP_CLIENT_ID }}
+          appRegistrationClientId = '${{ secrets.AZURE_APP_CLIENT_ID }}'
         failOnStdErr: false
         scope: 'subscription'
         region: eastus
