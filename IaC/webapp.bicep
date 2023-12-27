@@ -17,7 +17,7 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
     serverFarmId: relearnAngularApiAppServicePlan.id
     httpsOnly: true
     siteConfig: {
-      windowsFxVersion: 'DOTNETCORE|7.0'
+      windowsFxVersion: 'DOTNETCORE|8.0'
     }
   }
 }
