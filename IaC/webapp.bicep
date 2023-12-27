@@ -7,7 +7,7 @@ resource relearnAngularApiAppServicePlan 'Microsoft.Web/serverfarms@2023-01-01' 
   sku: {
     name: 'F1'
   }
-  kind: 'windows'
+  kind: 'linux'
 }
 
 resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
@@ -17,7 +17,7 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
     serverFarmId: relearnAngularApiAppServicePlan.id
     httpsOnly: true
     siteConfig: {
-      windowsFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOTNETCORE|8.0'
     }
   }
 }
