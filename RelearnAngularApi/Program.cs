@@ -1,12 +1,21 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using RelearnAngularApi;
+using RelearnAngularApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.AddDbContext<RelearnAngularContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("relearnAngularDbConnectionString")));
+
+builder.Services.AddScoped<ICharacterService, CharacterService>();
+
+builder.Services.AddAutoMapper(typeof(Program));
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
