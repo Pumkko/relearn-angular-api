@@ -1,11 +1,11 @@
 param webAppLocation string
 param keyvaultName string
-param azureAdTenantIdSecretName string
-param azureAppClientIdSecretName string
 param userAssignedIdentityId string
+param sqlServerName string
+param sqlDatabaseName string
 
 resource relearnAngularApiAppServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
-  name: 'relearnAngularApiPlan'
+  name: 'relearn-angular-service-plan'
   location: webAppLocation
   sku: {
     name: 'F1'
@@ -14,7 +14,7 @@ resource relearnAngularApiAppServicePlan 'Microsoft.Web/serverfarms@2023-01-01' 
 }
 
 resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
-  name: 'relearnAngularApp'
+  name: 'relearn-angular-app'
   location: webAppLocation
   identity: {
     type: 'UserAssigned'
@@ -36,11 +36,18 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
       appSettings: [
         {
           name: 'AzureAd:TenantId'
-          value: '@Microsoft.KeyVault(VaultName=${keyvaultName};SecretName=${azureAdTenantIdSecretName})'
+          value: '@Microsoft.KeyVault(VaultName=${keyvaultName};SecretName=AzureAdTenantId)'
         }
         {
           name: 'AzureAd:ClientId'
-          value: '@Microsoft.KeyVault(VaultName=${keyvaultName};SecretName=${azureAppClientIdSecretName})'
+          value: '@Microsoft.KeyVault(VaultName=${keyvaultName};SecretName=RelearnAngularAppClientId)'
+        }
+      ]
+      connectionStrings: [
+        {
+          name: 'relearnAngularDbConnectionString'
+          connectionString: 'Data Source=${sqlServerName}.database.windows.net;Initial Catalog=${sqlDatabaseName}; Authentication=Active Directory Default; Encrypt=True;'
+          type: 'SQLAzure'
         }
       ]
       netFrameworkVersion: 'v8.0'

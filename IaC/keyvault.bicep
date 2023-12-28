@@ -1,6 +1,5 @@
 param location string
 param userAssignedIdentityId string
-param appRegistrationClientId string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: 'relearn-angular-kv'
@@ -26,22 +25,4 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
-resource tenantIdSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
-  parent: keyVault
-  name: 'AzureTenantId'
-  properties: {
-    value: subscription().tenantId
-  }
-}
-
-resource clientIdSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
-  parent: keyVault
-  name: 'AzureAppClientId'
-  properties: {
-    value: appRegistrationClientId
-  }
-}
-
-output tenantIdSecretName string = tenantIdSecret.name
-output clientIdSecretName string = clientIdSecret.name
 output keyVaultName string = keyVault.name

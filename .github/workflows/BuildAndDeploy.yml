@@ -19,10 +19,20 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         template: ./IaC/main.bicep
-        parameters: 'appRegistrationClientId=${{ secrets.AZURE_APP_CLIENT_ID }}'
         failOnStdErr: false
         scope: 'subscription'
         region: eastus
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: | 
+          az webapp connection create sql \
+            -g "relearn-angular-rg" \
+            -n "relearn-angular-app" \
+            --tg "sql-rg" \
+            --server "relearn-angular-server" \
+            --database "relearn-angular-db" \
+            --system-identity 
 
   build-web-app:
     runs-on: ubuntu-latest
