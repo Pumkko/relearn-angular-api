@@ -23,19 +23,6 @@ jobs:
         scope: 'subscription'
         region: eastus
 
-    - name: Connect RelearnApp to Sql Database
-      uses: azure/CLI@v1
-      with:
-        inlineScript: | 
-          az extension add --name serviceconnector-passwordless --upgrade --debug
-          az webapp connection create sql \
-            -g "relearn-angular-rg" \
-            -n "relearn-angular-app" \
-            --tg "sql-rg" \
-            --server "relearn-angular-server" \
-            --database "relearn-angular-db" \
-            --system-identity 
-
   build-web-app:
     runs-on: ubuntu-latest
     needs: deploy-azure-resources

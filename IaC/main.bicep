@@ -12,22 +12,7 @@ resource sqlResourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' existi
   name: 'sql-rg'
 }
 
-module userIdentityModule 'userAssignedIndentity.bicep' = {
-  name: 'relearnAngularIdentityModule'
-  params: {
-    webAppLocation: location
-  }
-  scope: relearnAngularRg
-}
 
-module keyvaultModule 'keyvault.bicep' = {
-  name: 'keyVaultModule'
-  scope: relearnAngularRg
-  params: {
-    location: location
-    userAssignedIdentityId: userIdentityModule.outputs.userAssignedIdentityPrincipalId
-  }
-}
 
 module sqlServerModule 'sqlserver.bicep' = {
   name: 'sqlServerModuule'
@@ -37,21 +22,27 @@ module sqlServerModule 'sqlserver.bicep' = {
   }
 }
 
-
+var keyVaultName = 'relearn-angular-kv'
 module webAppModule 'webapp.bicep' = {
   name: 'webbAppModule'
   scope: relearnAngularRg 
   params: {
     webAppLocation: location
-    keyvaultName: keyvaultModule.outputs.keyVaultName
-    userAssignedIdentityId: userIdentityModule.outputs.userAssignedIdentityId
     sqlDatabaseName: sqlServerModule.outputs.sqlDatabaseName
     sqlServerName: sqlServerModule.outputs.sqlServerName
+    keyVaultName: keyVaultName
   }
   dependsOn: [
     sqlServerModule
-    userIdentityModule
-    keyvaultModule
   ]
 }
 
+module keyvaultModule 'keyvault.bicep' = {
+  name: 'keyVaultModule'
+  scope: relearnAngularRg
+  params: {
+    location: location
+    webAppIdentityPrincipalId: webAppModule.outputs.webAppSystemIdentityPrincipalId
+    keyVaultName: keyVaultName
+  }
+}

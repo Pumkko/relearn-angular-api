@@ -1,8 +1,9 @@
 param location string
-param userAssignedIdentityId string
+param webAppIdentityPrincipalId string
+param keyVaultName string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
-  name: 'relearn-angular-kv'
+  name: keyVaultName
   location: location
   properties: {
     sku: {
@@ -12,7 +13,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     tenantId: subscription().tenantId
     accessPolicies: [
       {
-        objectId: userAssignedIdentityId
+        objectId: webAppIdentityPrincipalId
         permissions: {
           secrets: [
             'get'

@@ -14,3 +14,10 @@ I did not use a resourceGroup here because i want my bicep file to create a spec
 
 ## Deploy File
 I pretty much copy pasted the samples from the docs, tried different things
+need to run this command : $ az webapp connection create sql -g "relearn-angular-rg" -n "relearn-angular-app" --tg "sql-rg" --server "relearn-angular-server" --database "relearn-angular-db" --system-identity
+
+from this doc : 
+https://learn.microsoft.com/en-us/azure/azure-sql/database/azure-sql-dotnet-entity-framework-core-quickstart?view=azuresql&tabs=visual-studio%2Cazure-portal%2Cportal
+
+i tried to insert it as a deploy step but could not make it work
+
