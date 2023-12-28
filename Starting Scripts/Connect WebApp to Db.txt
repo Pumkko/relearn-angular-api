@@ -1,0 +1,1 @@
+az webapp connection create sql -g "relearn-angular-rg" -n "relearn-angular-app" --tg "sql-rg" --server "relearn-angular-server" --database "relearn-angular-db" --system-identity
