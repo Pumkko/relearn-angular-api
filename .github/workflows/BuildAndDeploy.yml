@@ -69,12 +69,23 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .net-app
-      
+         
+      - name: Download artifact from migrations scripts
+        uses: actions/download-artifact@v3
+        with:
+          name: .sqlScript
+
       # Log into Azure
       - name: az login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Run Migrations
+        uses: azure/sql-action@v2.2.1
+        with:        
+          connection-string: ${{ secrets.AZURE_SQL_EF_MIGRATION_RUNNER_CONNECTION_STRING }}
+          path: ./script.sql
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -82,14 +93,5 @@ jobs:
         with:
           app-name: 'relearn-angular-app'
           package: .
-      
-      - name: Download artifact from migrations scripts
-        uses: actions/download-artifact@v3
-        with:
-          name: .sqlScript
-          
-      - uses: azure/sql-action@v2.2.1
-        with:        
-          connection-string: ${{ secrets.AZURE_SQL_EF_MIGRATION_RUNNER_CONNECTION_STRING }}
-          path: ./script.sql
+
         
