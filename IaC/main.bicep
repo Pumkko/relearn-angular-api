@@ -29,7 +29,7 @@ module keyvaultModule 'keyvault.bicep' = {
   }
 }
 
-module sqlServer 'sqlserver.bicep' = {
+module sqlServerModule 'sqlserver.bicep' = {
   name: 'sqlServerModuule'
   scope: sqlResourceGroup
   params: {
@@ -38,17 +38,18 @@ module sqlServer 'sqlserver.bicep' = {
 }
 
 
-module webApp 'webapp.bicep' = {
+module webAppModule 'webapp.bicep' = {
   name: 'webbAppModule'
   scope: relearnAngularRg 
   params: {
     webAppLocation: location
     keyvaultName: keyvaultModule.outputs.keyVaultName
     userAssignedIdentityId: userIdentityModule.outputs.userAssignedIdentityId
-    sqlDatabaseName: sqlServer.outputs.sqlDatabaseName
-    sqlServerName: sqlServer.outputs.sqlServerName
+    sqlDatabaseName: sqlServerModule.outputs.sqlDatabaseName
+    sqlServerName: sqlServerModule.outputs.sqlServerName
   }
   dependsOn: [
+    sqlServerModule
     userIdentityModule
     keyvaultModule
   ]
