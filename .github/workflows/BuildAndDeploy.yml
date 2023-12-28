@@ -31,10 +31,9 @@ jobs:
       - uses: actions/checkout@main
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.x'
-          include-prerelease: true
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -47,6 +46,20 @@ jobs:
         with:
           name: .net-app
           path: publish/relearnAngularApi.App
+
+        # Generate idempotent SQL Scripts for our migrations
+      - name: Generate Migrations Scripts
+        run: |
+            dotnet tool install --global dotnet-ef
+            dotnet tool restore
+            dotnet ef migrations script -o ./script.sql -i -p ./RelearnAngularApi/
+
+        #Deploy Script file
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .sqlScript
+          path: ./script.sql
 
   deploy-web-app:
     runs-on: ubuntu-latest
@@ -69,4 +82,14 @@ jobs:
         with:
           app-name: 'relearn-angular-app'
           package: .
+      
+      - name: Download artifact from migrations scripts
+        uses: actions/download-artifact@v3
+        with:
+          name: .sqlScript
+          
+      - uses: azure/sql-action@v2.2.1
+        with:        
+          connection-string: ${{ secrets.AZURE_SQL_EF_MIGRATION_RUNNER_CONNECTION_STRING }}
+          path: ./script.sql
         
