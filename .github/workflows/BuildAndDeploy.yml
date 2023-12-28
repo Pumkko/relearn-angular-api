@@ -22,10 +22,11 @@ jobs:
         failOnStdErr: false
         scope: 'subscription'
         region: eastus
-    - name: Azure CLI script
+    - name: Connect RelearnApp to Sql Database
       uses: azure/CLI@v1
       with:
         inlineScript: | 
+          az extension add --name serviceconnector-passwordless --upgrade |
           az webapp connection create sql \
             -g "relearn-angular-rg" \
             -n "relearn-angular-app" \
