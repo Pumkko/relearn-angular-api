@@ -38,13 +38,6 @@ resource relearnAngularApiAppService 'Microsoft.Web/sites@2023-01-01' = {
           value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=RelearnAngularAppClientId)'
         }
       ]
-      connectionStrings: [
-        {
-          name: 'relearnAngularDbConnectionString'
-          connectionString: 'Data Source=${sqlServerName}.database.windows.net;Initial Catalog=${sqlDatabaseName}; Authentication=Active Directory Default; Encrypt=True;'
-          type: 'SQLAzure'
-        }
-      ]
       netFrameworkVersion: 'v8.0'
     }
   }
