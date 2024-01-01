@@ -14,6 +14,10 @@ namespace RelearnAngularApi.ModelBuilders
             modelBuilder.Entity<Character>()
                 .Property(c => c.Id)
                 .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Character>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
         }
 
     }

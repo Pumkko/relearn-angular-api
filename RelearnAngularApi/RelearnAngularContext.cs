@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RelearnAngularApi.ModelBuilders;
 using RelearnAngularApi.Models;
 
 namespace RelearnAngularApi
@@ -10,7 +11,7 @@ namespace RelearnAngularApi
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.BuildCharacterModel();
         }
 
     }
