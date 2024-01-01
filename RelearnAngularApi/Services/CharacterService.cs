@@ -93,7 +93,7 @@ namespace RelearnAngularApi.Services
                     Name = c.Name,
                     Origin = c.Origin,
                     Species = c.Species,
-                    ValidSince = EF.Property<DateTime>(c, PeriodStart)
+                    ValidSince = DateTime.SpecifyKind(EF.Property<DateTime>(c, PeriodStart), DateTimeKind.Utc)
                 });
 
             return characters;
