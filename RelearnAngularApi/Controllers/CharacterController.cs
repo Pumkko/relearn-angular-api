@@ -20,7 +20,7 @@ namespace RelearnAngularApi.Controllers
             return Ok(characters);
         }
 
-        [HttpGet("history/{id}")]
+        [HttpGet("{id}/history")]
         public async Task<IActionResult> GetCharacterHistory(Guid id)
         {
             var characterHistory = await _characterService.GetCharacterHistory(id);
