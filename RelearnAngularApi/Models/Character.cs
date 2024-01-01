@@ -10,7 +10,7 @@ namespace RelearnAngularApi.Models
         Unknown = 2,
     }
 
-    public class Character
+    public record Character
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }

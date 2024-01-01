@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
-using RelearnAngularApi.Inputs;
+using RelearnAngularApi.Dtos;
 using RelearnAngularApi.Models;
 using RelearnAngularApi.Services;
 
@@ -12,7 +11,7 @@ namespace RelearnAngularApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class CharacterController(ICharacterService _characterService, IMapper _mapper) : ControllerBase
+    public class CharacterController(ICharacterService _characterService) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -21,12 +20,25 @@ namespace RelearnAngularApi.Controllers
             return Ok(characters);
         }
 
+        [HttpGet("history/{id}")]
+        public async Task<IActionResult> GetCharacterHistory(Guid id)
+        {
+            var characterHistory = await _characterService.GetCharacterHistory(id);
+            return Ok(characterHistory);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCharacterInput createCharacterInput)
         {
-            var character = _mapper.Map<Character>(createCharacterInput);
-            var createdCharacter = await _characterService.CreateNewCharacter(character);
+            var createdCharacter = await _characterService.CreateNewCharacter(createCharacterInput);
             return Ok(createdCharacter);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCharacterInput updateCharacterInput )
+        {
+            var updatedCharacter = await _characterService.UpdateCharacter(updateCharacterInput);   
+            return Ok(updatedCharacter);
         }
     }
 }

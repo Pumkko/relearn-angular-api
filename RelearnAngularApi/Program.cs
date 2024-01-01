@@ -14,7 +14,6 @@ builder.Services.AddDbContext<RelearnAngularContext>(options => options.UseSqlSe
 
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 
-builder.Services.AddAutoMapper(typeof(Program));
 
 
 builder.Services.AddControllers();
