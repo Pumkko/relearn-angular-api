@@ -2,6 +2,7 @@ on: [push, workflow_dispatch]
 name: Azure ARM
 jobs:
   deploy-azure-resources:
+    environment: production
     runs-on: ubuntu-latest
     steps:
       # Checkout code
