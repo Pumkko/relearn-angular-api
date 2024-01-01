@@ -8,6 +8,8 @@ namespace RelearnAngularApi.ModelBuilders
 
         public static void BuildCharacterModel(this ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Character>().ToTable(o => o.IsTemporal());
+
             modelBuilder.Entity<Character>()
                 .HasKey(c => c.Id);
 
