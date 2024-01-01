@@ -1,7 +1,13 @@
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      
 name: Azure ARM
 jobs:
   deploy-azure-resources:
+    environment: production
     runs-on: ubuntu-latest
     steps:
       # Checkout code

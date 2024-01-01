@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RelearnAngularApi;
 
@@ -11,9 +12,11 @@ using RelearnAngularApi;
 namespace RelearnAngularApi.Migrations
 {
     [DbContext(typeof(RelearnAngularContext))]
-    partial class RelearnAngularContextModelSnapshot : ModelSnapshot
+    [Migration("20240101153732_AddNameUniqueIndex")]
+    partial class AddNameUniqueIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,16 +42,6 @@ namespace RelearnAngularApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PeriodEnd")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodEnd");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodStart");
-
                     b.Property<string>("Species")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -59,17 +52,6 @@ namespace RelearnAngularApi.Migrations
                         .IsUnique();
 
                     b.ToTable("Characters");
-
-                    b.ToTable(tb => tb.IsTemporal(ttb =>
-                            {
-                                ttb.UseHistoryTable("CharactersHistory");
-                                ttb
-                                    .HasPeriodStart("PeriodStart")
-                                    .HasColumnName("PeriodStart");
-                                ttb
-                                    .HasPeriodEnd("PeriodEnd")
-                                    .HasColumnName("PeriodEnd");
-                            }));
                 });
 #pragma warning restore 612, 618
         }
