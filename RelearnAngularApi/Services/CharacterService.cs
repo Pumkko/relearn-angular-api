@@ -39,8 +39,8 @@ namespace RelearnAngularApi.Services
                 .Select(c => new CharacterLifeStatusHistory()
                 {
                     LifeStatus = c.LifeStatus,
-                    ValidFrom = EF.Property<DateTime>(c, PeriodStart),
-                    ValidTo = EF.Property<DateTime>(c, PeriodEnd)
+                    ValidFrom = DateTime.SpecifyKind(EF.Property<DateTime>(c, PeriodStart), DateTimeKind.Utc),
+                    ValidTo = DateTime.SpecifyKind(EF.Property<DateTime>(c, PeriodEnd), DateTimeKind.Utc)
                 })
                 .ToListAsync();
 
