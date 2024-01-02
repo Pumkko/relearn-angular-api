@@ -35,6 +35,7 @@ namespace RelearnAngularApi.Services
             var historyOf = await _context
                 .Characters
                 .TemporalAll()
+                .Where(c => c.Id == id)
                 .OrderBy(c => EF.Property<DateTime>(c, PeriodStart))
                 .Select(c => new CharacterLifeStatusHistory()
                 {
