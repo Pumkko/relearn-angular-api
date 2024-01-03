@@ -1,5 +1,21 @@
 # What did i learn
 
+## DTOs
+Well, well, well, sooo a little bit of history first :
+When I first started working on KIM and we had services returning DTOs, I was told by a fellow junior developper that he never saw that ever
+and that Services should return domain object which the controller should then maps to DTOs.
+He did not make much sense to me at that time because our DTOs were complex, though not large by any means, but it required logic, business rules using different domain models. That logic did not seem to fit within the responsabilities of the controllers. But then I asked by myself, what are controllers responsible of ? Furthermore a senior developper walked by and agreed with the junior developper.
+
+So for this small project, I looked around on SO and forums trying to find out what others thought about this problem and after a bit of reading and thinking I now believe that services should absolutely return DTOs and almost never domain object for the following reasons:
+- First the reasons that led me to have services return DTOs in KIM were absolutely sane, we needed a lot of logic, that logic needed to be somewhere and controllers are not the right place to write that logic in my opinion
+- But then what are controllers responsible of ? It struck me that even though controllers are usually pretty bare they do a lot thanks to Attributes.
+    - The controllers define what can be done by the app through the API it defines 
+    - The AuthorizeAttribute et RequiredScopeAttribute protects the endpoints from unauthorized access
+    - Using FromBody we can very easily implements a logic that automatically returns a 400 bad request if the input does not match the requirements (like how the `CreateCharacterInput` has a lot of required properties)
+I could go on with a few more things that could be done but it seems enough, a controller does a lot under the hood
+- Second it does not make sense from a Layer perspective for a Controller to Receive a domain object, if the layers are like 
+Controller->Service->Domain then having a controller receiving a Domain object completely goes over the service layer. We have a Layer accessing something from a different Layer that is not directly below it. That does not seem right. 
+
 ## Bicep
 Not much to say at the moment, kinda like it, it does have limitations though, because it only supports Azure, I found examples online that created ressources on Azure et then used Terraform to create new Github secrets from the created ressources
 
