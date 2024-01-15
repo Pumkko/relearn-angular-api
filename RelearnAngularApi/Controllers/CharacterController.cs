@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using RelearnAngularApi.Dtos;
@@ -7,6 +8,7 @@ using RelearnAngularApi.Services;
 
 namespace RelearnAngularApi.Controllers
 {
+    [ApiVersion(1.0)]
     [Authorize]
     [ApiController]
     [Route("[controller]")]
