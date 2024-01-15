@@ -1,5 +1,14 @@
 # What did i learn
 
+## EF Core Testing
+I used think that Unit Test should never need an open database connection to work properly, after some reading https://learn.microsoft.com/en-us/ef/core/testing/
+I used to think that tests which require an open DB connection were in a way testing EFCore itself which is useless. I also thought that a broken
+DB connection would fail all UT and that did not make sense to me since UT are supposed work in isolation.
+
+Now i Understand that testing what EF will do with our query is perfectly fine and also very hard to test without an actual connection. 
+Also The idea of using a Docker Image to run a SQL Server while deploying makes me feel more at ease with the idea. I used to hate mainly because I can't count how many times
+I have had to deal with broken UT that were not broken but the DB itself was.
+
 ## DTOs
 Well, well, well, sooo a little bit of history first :
 When I first started working on KIM and we had services returning DTOs, I was told by a fellow junior developper that he never saw that ever
