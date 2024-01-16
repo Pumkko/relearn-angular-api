@@ -24,6 +24,8 @@ builder.Services.AddControllers();
 builder.Services.AddProblemDetails();
 builder.Services.AddApiVersioning(options =>
     {
+        options.DefaultApiVersion = new ApiVersion(1.0);
+        options.AssumeDefaultVersionWhenUnspecified = true;
         options.ReportApiVersions = true;
         options.Policies.Sunset(0.9)
             .Effective(DateTimeOffset.Now.AddDays(60))
